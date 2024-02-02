@@ -1,0 +1,29 @@
+body {
+  margin: 0;
+  padding: 0;
+}
+
+.container {
+  max-width: 90%;
+  margin-top: 6%;
+  display: flex;
+  /* justify-content: space-between; */
+  flex-wrap: wrap;
+  gap: 2px;
+}
+.notecard {
+  width: calc(100% / 5 - 4%);
+  margin: 2%;
+  color: bisque;
+  background-color: rgb(19, 19, 99);
+  box-shadow: 3px 8px 15px rgba(0, 0, 0, 0.37);
+  border-radius: 10px;
+}
+
+.notecard > .Title {
+  font-size: 2vw;
+  text-align: center;
+  padding: 1%;
+  font-weight: bold;
+  border-bottom: 2px solid;
+}

@@ -1,0 +1,54 @@
+body {
+  margin: 0;
+  padding: 0;
+}
+
+.container {
+  max-width: 90%;
+  margin-top: 6%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 2%;
+}
+.notecard {
+  width: calc(100% / 5 - 4%);
+  margin: 2%;
+  color: bisque;
+  background-color: rgb(19, 19, 99);
+  box-shadow: 3px 8px 15px rgba(0, 0, 0, 0.37);
+  border-radius: 10px;
+  padding: 1%;
+}
+
+.notecard > .Title {
+  font-size: 2vw;
+  text-align: center;
+  padding: 1%;
+  font-weight: bold;
+  border-bottom: 2px solid;
+}
+
+.notecard > .buttons {
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+}
+
+.buttons > .Edit,
+.buttons > .Delete {
+  cursor: grabbing;
+  border-radius: 5px;
+  border: none;
+  padding: 2%;
+}
+
+.buttons > .Edit {
+  background-color: rgb(165, 112, 42);
+  color: white;
+}
+.buttons > .Delete {
+  background-color: rgb(165, 42, 42);
+  color: white;
+}
