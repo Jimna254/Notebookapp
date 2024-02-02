@@ -21,10 +21,11 @@ function saveNote(note: Omit<Note, "id">): void {
 }
 
 function displayNotes(): void {
-  if (document.querySelector(".container")) {
-    const notesContainer = document.querySelector(".container")!;
-    const notes = getNotes();
+  const notesContainer = document.querySelector(".container");
+  if (notesContainer) {
     notesContainer.innerHTML = "";
+    const notes = getNotes();
+
     notes.forEach((note) => {
       const noteElement = document.createElement("div");
       noteElement.className = "notecard";
@@ -33,13 +34,25 @@ function displayNotes(): void {
           <p class="content">${note.description}</p>
           <p class="Date">${note.date}</p>
         `;
+
+      const viewButton = document.createElement("button");
+      viewButton.textContent = "ViewItem";
+      viewButton.className = "view-item";
+      noteElement.appendChild(viewButton);
+
       notesContainer.appendChild(noteElement);
+
+      viewButton.addEventListener("click", () => {
+        localStorage.setItem("selectedNote", JSON.stringify(note));
+        window.location.href = `note.html`;
+      });
     });
   }
 }
 
 if (window.location.pathname.endsWith("add.html")) {
-  document.getElementById("form")?.addEventListener("submit", (e) => {
+  const form = document.getElementById("form");
+  form?.addEventListener("submit", (e) => {
     e.preventDefault();
     const title = (document.getElementById("title") as HTMLInputElement).value;
     const description = (document.getElementById("desc") as HTMLTextAreaElement)

@@ -1,66 +1,56 @@
-interface Note {
-  id: number;
-  title: string;
-  description: string;
-  date: string;
-}
+document.addEventListener("DOMContentLoaded", () => {
+  displaySelectedNote();
+});
 
-(() => {
-  function getNotes(): Note[] {
-    const notes = localStorage.getItem("notes");
-    return notes ? JSON.parse(notes) : [];
-  }
+function displaySelectedNote(): void {
+  const noteJson = localStorage.getItem("selectedNote");
+  if (noteJson) {
+    const note: Note = JSON.parse(noteJson);
 
-  function displayNoteDetails(): void {
-    const urlParams = new URLSearchParams(window.location.search);
-    const noteId = parseInt(urlParams.get("id") || "0", 10);
-    const note = getNoteById(noteId);
+    const container = document.querySelector(".container");
+    if (!container) return;
 
-    if (note) {
-      document.querySelector(".Title")!.textContent = note.title;
-      document.querySelector(".content")!.textContent = note.description;
-      document.querySelector(".Date")!.textContent = note.date;
-    } else {
-      console.log("Note not found");
-    }
-  }
+    // Clear the container or ensure it's empty
+    container.innerHTML = "";
 
-  function getNoteById(noteId: number): Note | undefined {
-    const notes = getNotes();
-    return notes.find((note) => note.id === noteId);
-  }
+    // Dynamically create the notecard element with note details
+    const noteElement = document.createElement("div");
+    noteElement.className = "notecard";
+    noteElement.innerHTML = `
+        <h2 class="Title">${note.title}</h2>
+        <p class="content">${note.description}</p>
+        <p class="Date">${note.date}</p>
+        <div class="buttons">
+          <button class="Edit">Edit</button>
+          <button class="Delete">Delete</button>
+        </div>
+      `;
+    container.appendChild(noteElement);
 
-  function deleteNoteById(noteId: number): void {
-    let notes = getNotes();
-    notes = notes.filter((note) => note.id !== noteId);
-    localStorage.setItem("notes", JSON.stringify(notes));
-
-    window.location.href = "index.html";
-  }
-
-  function addEventListeners(noteId: number): void {
+    
     document.querySelector(".Edit")?.addEventListener("click", () => {
-      window.location.href = `add.html?id=${noteId}`;
+     
+      window.location.href = `add.html`;
     });
 
     document.querySelector(".Delete")?.addEventListener("click", () => {
+      // Confirm deletion
       const confirmDelete = confirm(
         "Are you sure you want to delete this note?"
       );
       if (confirmDelete) {
-        deleteNoteById(noteId);
+        // Remove the note from local storage and redirect to index.html
+        localStorage.removeItem("selectedNote");
+        deleteNoteById(note.id);
       }
     });
+  } else {
+    console.log("No note found");
   }
+}
 
-  function init(): void {
-    displayNoteDetails();
-    const urlParams = new URLSearchParams(window.location.search);
-    const noteId = parseInt(urlParams.get("id") || "0", 10);
-    if (noteId) {
-      addEventListeners(noteId);
-    }
-  }
-
-  init();
-})();
+function deleteNoteById(noteId: number): void {
+  const notes = getNotes().filter((note) => note.id !== noteId);
+  localStorage.setItem("notes", JSON.stringify(notes));
+  window.location.href = "index.html";
+}
